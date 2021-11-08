@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-elisa
+  namespace: default
+  labels:
+     app: Deployment-Elisa
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: Deployment-Elisa
+  template:
+    metadata:
+      labels:
+        app: Deployment-Elisa
+    spec:
+      containers:
+      - name: Depldyment-Elisa
+        image: us.icr.io/default/<image>:<tag>
+        ports:
+          - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dservice_name>
+  namespace: default
+spec:
+  type: ClusterIP
+  selector:
+    app: Deployment-Elisa
+  ports:
+    - port: 808
+      targetPort: 8080
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+    name: elisa-route
+    namespace: default
+spec:
+    to:
+        kind: Service
+        name: <service_name>
